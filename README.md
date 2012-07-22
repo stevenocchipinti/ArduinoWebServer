@@ -22,3 +22,13 @@ As it would be based on HTTP requests, this would also make it easily
 accessible by a mobile app or a mobile browser, and (after analyzing the risks)
 could also be port forwarded through a home router to make it accessible from
 the internet.
+
+
+Simplicity
+----------
+
+As my requirements are very simplistic, this program ignores most of the HTTP
+request and uses very basic string matching to work out what to do. If the
+requirements become more complex, it seems like the
+[WebDuino project](http://code.google.com/p/webduino/)
+would offer much better HTTP request parsing!

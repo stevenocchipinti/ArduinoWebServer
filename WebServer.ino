@@ -64,6 +64,11 @@ void loop()
 {
   // listen for incoming clients
   EthernetClient client = server.available();
+
+  // Store the request in a string
+  String request = String(" ");
+
+  // If a client is available, start parsing the request
   if (client) {
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
@@ -78,8 +83,8 @@ void loop()
           // Turn on the LED
           digitalWrite(LED, HIGH);
 
-          // Serve the configured file to the client
-          serve(defaultFilename, client);
+          // Do something with the request
+          handleRequest(request, client);
 
           break;
         }
@@ -90,6 +95,7 @@ void loop()
         else if (c != '\r') {
           // you've gotten a character on the current line
           currentLineIsBlank = false;
+          request += c;
         }
       }
     }
@@ -104,15 +110,48 @@ void loop()
 }
 
 
-// Serve a file from the SD card to the given HTTP client
-void serve(char* filename, EthernetClient client) {
+
+// Work out what to do with the request
+void handleRequest(String request, EthernetClient client) {
+
+  if (request.indexOf("GET /status ") > 0) {
+    serveStatusJSON(client);
+  } else {
+    serveHTMLFile(defaultFilename, client);
+  }
+
+}
+
+
+
+// Serve HTTP headers (the content will need to come separately)
+void serveHTTPHeaders(String status, String contentType, EthernetClient client) {
+  client.print("HTTP/1.1 ");
+  client.println(status);
+  client.print("Content-Type: ");
+  client.println(contentType);
+  client.println();
+}
+
+
+
+// Serve a JSON dump to represent some kind of status
+void serveStatusJSON(EthernetClient client) {
+  // Send the HTTP headers
+  serveHTTPHeaders("200 OK", "application/json", client);
+  // Generate some content
+  client.print("{\"aThing\":true,\"anotherThing\":false}");
+}
+
+
+
+// Serve a HTML file from the SD card to the given HTTP client
+void serveHTMLFile(char* filename, EthernetClient client) {
   // Open the file for reading
   myFile = SD.open(filename);
   if (myFile) {
-    // send a standard http response header
-    client.println("HTTP/1.1 200 OK");
-    client.println("Content-Type: text/html");
-    client.println();
+    // Send the HTTP headers
+    serveHTTPHeaders("200 OK", "text/html", client);
 
     // read from the file until there's nothing else in it:
     while (myFile.available()) {

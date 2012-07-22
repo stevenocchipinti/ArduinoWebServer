@@ -1,14 +1,18 @@
 /*
-  Web Server
-
-A simple web server that serves files from the MicroSD card reader
-using an Arduino Wiznet Ethernet compatible Freetronics EtherMega 2560.
-
-This sketch is based on the work of:
-  David A. Mellis   (created 18 Dec 2009)
-  Tom Igoe          (modified 4 Sep 2010)
-
-*/
+ * Arduino Web Server
+ *
+ * A simple web server that serves files from the MicroSD card reader
+ * using an Arduino Wiznet Ethernet compatible Freetronics EtherMega 2560.
+ *
+ * Written by Steven Occhipinti
+ *    http://stevenocchipinti.com
+ *    https://github.com/stevenocchipinti/ArduinoWebServer
+ *
+ * This sketch is based on the work of:
+ *    David A. Mellis   (created 18 Dec 2009)
+ *    Tom Igoe          (modified 4 Sep 2010)
+ *
+ */
 
 
 
